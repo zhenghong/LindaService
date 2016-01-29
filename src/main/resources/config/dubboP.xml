@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+             
+	<dubbo:application name="LindaServer" />
+	<!-- 注册中心服务地址 -->
+    <dubbo:registry  protocol="zookeeper"  address="100.100.11.68:2181,100.100.11.198:2181,100.100.11.70:2181"  />
+   	
+   	<!-- 注册 -->  
+	<dubbo:service interface="com.lm.service.UserService" ref="usi" />
+	<!--  
+	<dubbo:service interface="com.lm.service.UserSessionService" ref="ussi" />
+	-->
+	<dubbo:service interface="com.lm.service.UserSessionServiceCluster" ref="ussiCluster" timeout="1200000" />
+	<!-- 转账 -->
+	<dubbo:service interface="com.lm.service.TranService" ref="tsi" />
+	
+	<dubbo:protocol name="dubbo" port="20880" />
+		
+</beans>

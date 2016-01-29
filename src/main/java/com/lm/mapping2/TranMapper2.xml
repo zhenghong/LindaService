@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lm.mapping2.TranMapper2">
+	<resultMap id="tranMapper" type="Transfer">
+		<id property="flowno" column="flowno" />
+		<result property="userId" column="userId" />
+		<result property="acc" column="acc" />
+		<result property="revAcc" column="revAcc" />
+		<result property="amt" column="amt" />
+		<result property="time" column="time" />
+	</resultMap>
+	
+	<select id="tranFlow" resultMap="tranMapper">
+		select * from transfer 
+	</select>
+	
+	<insert id="insertUser" parameterType="Transfer">
+		insert into transfer(flowno,userId,acc,revAcc,amt,time) 
+		values(#{flowno},#{userId},#{acc},#{revAcc},#{amt},#{time})
+	</insert>
+		
+</mapper>
