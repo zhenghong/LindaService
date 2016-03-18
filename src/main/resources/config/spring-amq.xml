@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+http://www.springframework.org/schema/mvc 
+http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<!-- activeMQ -->	
+	<bean id="jmsConnectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">  
+        <property name="brokerURL" 
+        	value="failover:(tcp://100.100.11.173:61616,tcp://100.100.11.188:61616,tcp://100.100.11.83:61616)" />  
+    </bean> 
+
+	<bean id="jmsTemplateQueue" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="defaultDestination" ref="asyncQueue" />
+		<property name="sessionTransacted" value="true" />
+	</bean>
+	
+	<bean id="jmsTemplateTopic" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="defaultDestination" ref="asyncTopic" />
+		<property name="sessionTransacted" value="true" />
+	</bean>	
+
+	<!--queue通道 -->
+	<bean id="asyncQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="asyncQueue" />
+	</bean>
+
+	<!--topic通道 -->
+	<bean id="asyncTopic" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="asyncTopic" />
+	</bean>
+
+	<!-- 消息监听容器 -->
+	<bean id="jmsContainerQueue" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="destination" ref="asyncQueue" />
+		<property name="messageListener" ref="consumerMessageListener" />
+	</bean>
+	
+	<!-- 消息监听容器 -->
+	<bean id="jmsContainerTopic" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="destination" ref="asyncTopic" />
+		<property name="messageListener" ref="consumerMessageListener" />
+	</bean>	
+
+</beans>  
