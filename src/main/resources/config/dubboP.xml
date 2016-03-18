@@ -15,11 +15,15 @@
 	<dubbo:service interface="com.lm.service.UserService" ref="usi" />
 	<!--  
 	<dubbo:service interface="com.lm.service.UserSessionService" ref="ussi" />
-	-->
 	<dubbo:service interface="com.lm.service.UserSessionServiceCluster" ref="ussiCluster" timeout="1200000" />
+	-->
 	<!-- 转账 -->
 	<dubbo:service interface="com.lm.service.TranService" ref="tsi" />
-	
+	<!-- 缓存 -->
+	<dubbo:service interface="com.lm.service.RedisServiceCluster" ref="redisCluster" />	
+	<!-- 消息 -->
+	<dubbo:service interface="com.lm.service.MesSenderService" ref="mesSender" />	
+		
 	<dubbo:protocol name="dubbo" port="20880" />
 		
 </beans>
