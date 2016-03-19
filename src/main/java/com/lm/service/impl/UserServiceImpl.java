@@ -8,9 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lm.mapping.UserMapper;
-import com.lm.mapping2.UserMapper2;
-import com.lm.mes.MessageSender;
-import com.lm.model.MesInfo;
 import com.lm.model.User;
 import com.lm.service.UserService;
 
@@ -19,10 +16,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserMapper userMapper;
-
-	@Autowired
-	private UserMapper2 userMapper2;
-
+	
 	@Autowired
 	//private MessageSender messageSender;
 
