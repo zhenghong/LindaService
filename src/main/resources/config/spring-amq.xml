@@ -14,6 +14,12 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
         <property name="brokerURL" 
         	value="failover:(tcp://100.100.11.173:61616,tcp://100.100.11.188:61616,tcp://100.100.11.83:61616)" />  
     </bean> 
+    
+	<!-- 使用缓存连接工厂 -->
+	<bean id="cachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory" ref="jmsConnectionFactory"/>
+        <property name="sessionCacheSize" value="100" />
+    </bean>    
 
 	<bean id="jmsTemplateQueue" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="jmsConnectionFactory" />
@@ -25,6 +31,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 		<property name="connectionFactory" ref="jmsConnectionFactory" />
 		<property name="defaultDestination" ref="asyncTopic" />
 		<property name="sessionTransacted" value="true" />
+		<property name="deliveryMode" value="2" />
 	</bean>	
 
 	<!--queue通道 -->
@@ -37,18 +44,21 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 		<constructor-arg value="asyncTopic" />
 	</bean>
 
-	<!-- 消息监听容器 -->
+	<!-- queue监听容器 -->
 	<bean id="jmsContainerQueue" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="jmsConnectionFactory" />
 		<property name="destination" ref="asyncQueue" />
 		<property name="messageListener" ref="consumerMessageListener" />
+		<property name="sessionTransacted" value="true" />
 	</bean>
 	
-	<!-- 消息监听容器 -->
+	<!-- topic监听容器 -->
 	<bean id="jmsContainerTopic" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="jmsConnectionFactory" />
 		<property name="destination" ref="asyncTopic" />
 		<property name="messageListener" ref="consumerMessageListener" />
+		<property name="sessionTransacted" value="true" />
+		<property name="subscriptionDurable" value="true" />
 	</bean>	
 
 </beans>  
