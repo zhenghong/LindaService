@@ -19,11 +19,9 @@ public class MesSenderServiceImpl implements MesSenderService{
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void sendQueue(MesInfo mi) {
 
-		jmsTemplateQueue.convertAndSend("100");
+		//jmsTemplateQueue.convertAndSend("100");
 		
-		//int i = 1/0;
-		
-		jmsTemplateQueue.convertAndSend("200");
+		jmsTemplateQueue.convertAndSend("asyncQueue_"+"zh", "100");
 	}
 
 	public void sendTopic(MesInfo mi) {
